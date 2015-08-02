@@ -1,0 +1,16 @@
+/* Additional Application CSS */
+
+form#hit_form {
+  float: left;  
+  margin-right: 10px;
+}
+
+form#stay_form {
+  float: left;  
+}
+
+img.card_image {
+  margin: 0px 5px 5px 0px;
+  border: 2px solid black;
+  border-radius: 6px;
+}

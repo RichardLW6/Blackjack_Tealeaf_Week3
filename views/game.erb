@@ -2,20 +2,39 @@
 
 <p>Welcome <%= session[:player_name] %>.</p>
 
-Dealer's cards:
 
-<ul>
-  <% session[:dealer_cards].each do |card| %>
-    <li><%= card.to_s %></li>
-  <% end %>
-</ul>
+
+<div class="well">
+  <h4>Dealer's cards:</h4>
+    <% session[:dealer_cards].each do |card| %>
+      <%= card_image(card) %>
+    <% end %>
+</div>
+
 
 <br/>
 
-Player's cards:
+<div class="well">
+  <h4>Player's cards:</h4>
+    <% session[:player_cards].each do |card| %>
+      <%= card_image(card) %>
+    <% end %>
+</div>
 
-<ul>
-  <% session[:player_cards].each do |card| %>
-    <li><%= card.to_s %></li>
-  <% end %>
-</ul>
+<br/>
+<p>What would <%= session[:player_name] %> like to do?
+<p><%= session[:player_name] + "'s total hand value is: " + calculate_total(session[:player_cards]).to_s %></p>
+
+
+
+<% if @show_hit_or_stay_buttons %>
+  <form id="hit_form" action="/game/player/hit" method="post">
+    <input type="submit" class="btn btn-success" value="Hit"/>
+  </form>
+
+  <form id="stay_form" action="/game/player/stay" method="post">
+    <input type="submit" class="btn btn-warning" value="Stay"/>
+  </form>
+
+<% end %>
+</p>
