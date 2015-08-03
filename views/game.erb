@@ -1,13 +1,23 @@
-<h1>Blackjack!</h1>
+<h1 id="blackjack_title">Blackjack</h1>
 
-<p>Welcome <%= session[:player_name] %>.</p>
+<br/>
 
-
+<% if @show_play_or_quit_buttons %>
+  <p><strong>Play again?</strong></p>
+  <div id="play_or_quit_buttons">
+      <a href="/game" class="btn btn-primary">Yes</a>
+      <a href="/game_over" class="btn btn-warning">No</a> 
+  </div>
+<% end %>
 
 <div class="well">
   <h4>Dealer's cards:</h4>
     <% session[:dealer_cards].each do |card| %>
-      <%= card_image(card) %>
+      <% if session[:turn] != "dealer" && card == session[:dealer_cards].first %>
+        <img src='/images/cards/cover.jpg' class='card_image'>
+      <% else %>
+        <%= card_image(card) %>
+      <% end %>
     <% end %>
 
     <% if @show_dealer_hit_button %>
@@ -20,30 +30,29 @@
     <% end %>
 </div>
 
-
 <br/>
 
 <div class="well">
-  <h4>Player's cards:</h4>
+  <h4><%= "#{session[:player_name]}'s cards:" %></h4>
     <% session[:player_cards].each do |card| %>
       <%= card_image(card) %>
     <% end %>
 </div>
 
-<br/>
-<p>What would <%= session[:player_name] %> like to do?
-<p><%= session[:player_name] + "'s total hand value is: " + calculate_total(session[:player_cards]).to_s %></p>
-
-
-
 <% if @show_hit_or_stay_buttons %>
-  <form id="hit_form" action="/game/player/hit" method="post">
-    <input type="submit" class="btn btn-success" value="Hit"/>
-  </form>
 
-  <form id="stay_form" action="/game/player/stay" method="post">
-    <input type="submit" class="btn btn-warning" value="Stay"/>
-  </form>
+<div id="player_actions">
+  <h4><%= session[:player_name] + " has " + calculate_total(session[:player_cards]).to_s %>. What would <%= session[:player_name] %> like to do?</h4>
+
+  <div id="player_decision_buttons">
+    <form id="hit_form" action="/game/player/hit" method="post">
+      <input type="submit" class="btn btn-success" value="Hit"/>
+    </form>
+
+    <form id="stay_form" action="/game/player/stay" method="post">
+      <input type="submit" class="btn btn-warning" value="Stay"/>
+    </form>
+  </div>
+</div>
 
 <% end %>
-</p>

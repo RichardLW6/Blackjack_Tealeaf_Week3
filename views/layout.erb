@@ -12,19 +12,19 @@
         <div class="container">
             <ul class="nav">
               <li><a href="/new_player">Start Over</a></li>
-              <li><a href="/game">Play Again</a></li>
             </ul>
         </div>
       </div>
     </div>
 
   <div class="container">
-    <%if @error %>
-      <div class="alert alert-error"><%=@error%></div>
-    <% end %>
 
     <%if @success %>
-      <div class="success alert-success"><%=@success%></div>
+      <div class="alert alert-success"><%=@success%></div>
+    <% end %>
+
+    <%if @error %>
+      <div class="alert alert-error"><%=@error%></div>
     <% end %>
 
       <%= yield %>

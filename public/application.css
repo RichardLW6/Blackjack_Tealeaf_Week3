@@ -1,16 +1,44 @@
 /* Additional Application CSS */
 
-form#hit_form {
-  float: left;  
-  margin-right: 10px;
-}
-
-form#stay_form {
-  float: left;  
-}
-
 img.card_image {
   margin: 0px 5px 5px 0px;
   border: 2px solid black;
   border-radius: 6px;
 }
+
+#play_or_quit_buttons {
+  margin-bottom: 30px;
+}
+
+#blackjack_title {
+  text-align: center;
+}
+
+#player_actions {
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid black;
+  text-align: center;
+  margin: 0 auto;
+  width: 40em;
+  padding-top: 10px;
+  background-color: #c6f4bc;
+}
+
+#player_decision_buttons {
+  position: relative;
+  text-align: center;
+  margin: 0 auto;
+  width: 10em;
+  display: inline;
+}
+
+form#hit_form {
+  display: inline-block;
+}
+
+form#stay_form {
+  display: inline-block;
+  margin-left: 8px;
+}
+
