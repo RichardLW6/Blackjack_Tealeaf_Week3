@@ -5,7 +5,7 @@
 <% if @show_play_or_quit_buttons %>
   <p><strong>Play again?</strong></p>
   <div id="play_or_quit_buttons">
-      <a href="/game" class="btn btn-primary">Yes</a>
+      <a href="/bet" class="btn btn-primary">Yes</a>
       <a href="/game_over" class="btn btn-warning">No</a> 
   </div>
 <% end %>
@@ -41,16 +41,19 @@
 
 <% if @show_hit_or_stay_buttons %>
 
-<div id="player_actions">
+<div class="well" id="player_actions">
   <h4><%= session[:player_name] + " has " + calculate_total(session[:player_cards]).to_s %>. What would <%= session[:player_name] %> like to do?</h4>
+  <h5><%= "You bet \$#{session[:player_bet]}, and you currently have \$#{session[:player_money]}" %></h5>
+
+  <br/>
 
   <div id="player_decision_buttons">
     <form id="hit_form" action="/game/player/hit" method="post">
-      <input type="submit" class="btn btn-success" value="Hit"/>
+      <input type="submit" class="btn btn-large btn-success" value="Hit"/>
     </form>
 
     <form id="stay_form" action="/game/player/stay" method="post">
-      <input type="submit" class="btn btn-warning" value="Stay"/>
+      <input type="submit" class="btn btn-large btn-warning" value="Stay"/>
     </form>
   </div>
 </div>

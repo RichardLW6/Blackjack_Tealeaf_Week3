@@ -1,3 +1,15 @@
 <h3>Thanks for playing!</h3>
 
-<a href='/new_player'>Start Over</a>
+<h5>You finish the game with <strong>$<%= session[:player_money] %></strong>.</h5>
+
+<%if session[:player_money] == 0 %>
+  <h5><%= "Wow, you're pathetic! At least you still have your pride...right?" %></h5>
+<% elsif session[:player_money] > 500 %>
+  <h5><%= "Nice game. Have you thought of going pro?" %></h5>
+<% else %>
+  <h5><%= "Good game. Come back and do better next time!" %></h5>
+<% end %>
+
+<br/>
+
+<a href='/new_player' class='btn btn-success'>Start Over</a>
