@@ -24,14 +24,6 @@ img.card_image {
   margin-bottom: 30px;
 }
 
-#player_decision_buttons {
-  position: relative;
-  text-align: center;
-  display: inline;
-  height: 200px;
-  width: 200px;
-}
-
 form#hit_form {
   display: inline-block;
 }
