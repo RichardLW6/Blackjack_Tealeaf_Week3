@@ -88,11 +88,19 @@ helpers do
   def broke?(money)
     money == 0
   end
+
+  # find if player hits blackjack
+  def blackjack?(hand)
+    calculate_total(hand) == 21 &&
+    hand.length == 2
+  end
+
 end
 
 before do
   @show_hit_or_stay_buttons = true
   @show_play_or_quit_buttons = false
+  @show_continue_button = false
 end
 
 get '/' do
@@ -139,6 +147,7 @@ end
 
 get '/game' do
   session[:turn] = session[:player_name]
+  session[:player_blackjack] = false
 
   # create a deck and put it in session
   suits = ['H', 'D', 'C', 'S']
@@ -155,8 +164,12 @@ get '/game' do
 
   player_total = calculate_total(session[:player_cards])
 
-  if player_total == BLACKJACK_AMOUNT
-    winner!("#{session[:player_name]} starts with a blackjack")
+  # player hits blackjack
+  if blackjack?(session[:player_cards])
+    @show_hit_or_stay_buttons = false
+    @show_continue_button = true
+    session[:player_blackjack] = true
+    @winner = "#{session[:player_name]} draws a blackjack!"
   end
 
   erb :game
@@ -167,7 +180,9 @@ post '/game/player/hit' do
 
   player_total = calculate_total(session[:player_cards])
   if player_total == BLACKJACK_AMOUNT
-    winner!("#{session[:player_name]} hit blackjack")
+    @show_hit_or_stay_buttons = false
+    @show_continue_button = true
+    @winner = "#{session[:player_name]} stays at 21."
   elsif player_total > BLACKJACK_AMOUNT
     loser!("It looks like #{session[:player_name]} busted with #{player_total}")
   end
@@ -176,7 +191,7 @@ post '/game/player/hit' do
 end
 
 post '/game/player/stay' do
-  @success = "#{session[:player_name]} has chosen to stay"
+  @winner = "#{session[:player_name]} has chosen to stay"
   @show_hit_or_stay_buttons = false
   redirect '/game/dealer'
 end
@@ -189,10 +204,28 @@ get '/game/dealer' do
   dealer_total = calculate_total(session[:dealer_cards])
   player_total = calculate_total(session[:player_cards])
 
-  if dealer_total == BLACKJACK_AMOUNT
+  if blackjack?(session[:dealer_cards]) && session[:player_blackjack]
+    # dealer and player both hit blackjack
+    tie!("Both Dealer and #{session[:player_name]} hit a blackjack")
+
+  elsif session[:player_blackjack]
+    # player wins with a blackjack
+    session[:player_bet] = (session[:player_bet] * 1.5).to_i
+    # player is rewarded 50% more money for blackjack
+    winner!("#{session[:player_name]} wins with a blackjack")
+
+  elsif blackjack?(session[:dealer_cards]) && player_total == BLACKJACK_AMOUNT
+    # dealer hits blackjack but player pushes with a score of 21
+    tie!("Dealer hits blackjack, but #{session[:player_name]} is safe at 21")
+
+  elsif blackjack?(session[:dealer_cards])
+    # dealer wins with a blackjack
     loser!("Dealer hits blackjack")
+
   elsif dealer_total > BLACKJACK_AMOUNT
+    # dealer busts
     winner!("Dealer has busted at #{dealer_total}")
+
   elsif dealer_total >= DEALER_MIN_HIT || dealer_total > player_total
     # dealer stays
     redirect '/game/compare'
@@ -210,7 +243,6 @@ post '/game/dealer/hit' do
 end
 
 get '/game/compare' do
-
   player_total = calculate_total(session[:player_cards])
   dealer_total = calculate_total(session[:dealer_cards])
 

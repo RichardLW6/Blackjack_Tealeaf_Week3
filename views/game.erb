@@ -8,7 +8,6 @@
   <!-- Game Results Messages -->
 
   <div class="container">
-
     <%if @winner %>
       <div class="alert alert-success"><%=@winner%></div>
     <% end %>
@@ -16,7 +15,6 @@
     <%if @loser %>
       <div class="alert alert-error"><%=@loser%></div>
     <% end %>
-
   </div>
 
   <!-- Play Again or Quit Buttons -->
@@ -33,7 +31,6 @@
 
   <div class="well">
     <h4>Dealer's cards:</h4>
-
       <% session[:dealer_cards].each do |card| %>
         <% if session[:turn] != "dealer" && card == session[:dealer_cards].first %>
           <img src="/images/cards/cover.jpg" class="card_image" />
@@ -41,7 +38,6 @@
           <%= card_image(card) %>
         <% end %>
       <% end %>
-
       <p>
         <% if @show_dealer_hit_button %>
           <h5>Dealer has <%= calculate_total(session[:dealer_cards]) %> and will hit.</h5>
@@ -54,7 +50,7 @@
 
   <br/>
 
-  <!-- Player Cards and Hit/Stay Actions -->
+  <!-- Player Cards and Actions -->
 
   <div id="player_cards_and_actions">
 
@@ -64,37 +60,55 @@
       <h4>
         <%= session[:player_name] %>'s cards:
       </h4>
-
       <% session[:player_cards].each do |card| %>
         <%= card_image(card) %>
       <% end %>
     </div>
 
-    <!-- Hit or Stay Buttons -->
+    <!-- Player Actions Area -->
 
-    <% if @show_hit_or_stay_buttons %>
+    <% if @show_hit_or_stay_buttons || @show_continue_button %>
 
       <div class="well" id="player_actions">
 
-        <h4>
-          <%= session[:player_name] %> has <%= calculate_total(session[:player_cards]) %>. What would <%= session[:player_name] %> like to do?
-        </h4>
-        <h5>
-          You bet $<%= session[:player_bet] %>, and you currently have $<%= session[:player_money] %>.
-        </h5>
+        <!-- Player Decides to Hit or Stay -->
 
-        <br/>
+        <% if @show_hit_or_stay_buttons %>
 
-        <form id="hit_form" action="/game/player/hit" method="post">
-          <input type="submit" class="btn btn-large btn-success" value="Hit"/>
-        </form>
+          <h4>
+            <%= session[:player_name] %> has <%= calculate_total(session[:player_cards]) %>. What would <%= session[:player_name] %> like to do?
+          </h4>
+          <h5>
+            You bet $<%= session[:player_bet] %>, and you currently have $<%= session[:player_money] %>.
+          </h5>
 
-        <form id="stay_form" action="/game/player/stay" method="post">
-          <input type="submit" class="btn btn-large btn-warning" value="Stay"/>
-        </form>
+          <br/>
 
-      </div>
+          <form id="hit_form" action="/game/player/hit" method="post">
+            <input type="submit" class="btn btn-large btn-success" value="Hit"/>
+          </form>
+
+          <form id="stay_form" action="/game/player/stay" method="post">
+            <input type="submit" class="btn btn-large btn-warning" value="Stay"/>
+          </form>
+
+        <!-- Player Hits Blackjack OR Player gets 21 -->
+
+        <% elsif @show_continue_button %>
+
+          <h4>
+            <%= session[:player_name] %> is at 21! Now it is the Dealer's turn...
+          </h4>
+
+          <br/>
+
+          <form id="continue_form" action="/game/player/stay" method="post">
+            <input type="submit" class="btn btn-large btn-success" value="See Dealer Hand"/>
+          </form>
+
+        <% end %>
+      </div> <!-- Player Actions Div -->
 
     <% end %>
-  </div>
-</div>
+  </div> <!-- Player Cards and Actions Div -->
+</div> <!-- Game Div -->
