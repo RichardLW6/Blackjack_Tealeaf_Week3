@@ -10,7 +10,7 @@
 
 <!-- Messages Depending on Player Performance -->
 
-<% if session[:player_money] == 0 %>
+<% if session[:player_money] <= 0 %>
   <h5>
     <%= "Wow, you're pathetic! At least you still have your pride...right?" %>
   </h5>

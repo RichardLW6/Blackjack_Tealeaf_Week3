@@ -86,7 +86,7 @@ helpers do
 
   # find if player is out of money
   def broke?(money)
-    money == 0
+    money <= 0
   end
 
   # find if player hits blackjack

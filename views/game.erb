@@ -20,10 +20,10 @@
   <!-- Play Again or Quit Buttons -->
 
   <% if @show_play_or_quit_buttons %>
-    <p><strong>Play again?</strong></p>
+    <h4>Play again?</h4>
     <div id="play_or_quit_buttons">
-      <a href="/bet" class="btn btn-primary">Yes</a>
-      <a href="/game_over" class="btn btn-warning">No</a> 
+      <a href="/bet" class="btn btn-success">Yes</a>
+      <a href="/game_over" id="stop_play_button" class="btn btn-warning">No</a> 
     </div>
   <% end %>
 
@@ -103,7 +103,7 @@
           <br/>
 
           <form id="continue_form" action="/game/player/stay" method="post">
-            <input type="submit" class="btn btn-large btn-success" value="See Dealer Hand"/>
+            <input type="submit" class="btn btn-large btn-primary" value="See Dealer Hand &rarr;"/>
           </form>
 
         <% end %>

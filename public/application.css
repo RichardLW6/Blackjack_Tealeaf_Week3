@@ -6,6 +6,10 @@ img.card_image {
   border-radius: 6px;
 }
 
+#stop_play_button {
+  margin-left: 10px;
+}
+
 #play_or_quit_buttons {
   margin-bottom: 30px;
 }
@@ -16,7 +20,6 @@ img.card_image {
 
 #player_actions {
   position: relative;
-  border-radius: 5px;
   text-align: center;
   margin: 0 auto;
   width: 40em;
